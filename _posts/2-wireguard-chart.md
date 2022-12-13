@@ -1,19 +1,37 @@
 ---
 title: 'Wireguard Chart - A Helm chart to manage VPNs in kubernetes'
-excerpt: TODO'
-coverImage: '/assets/blog/dynamic-routing/cover.jpg'
-date: '2020-03-16T05:35:07.322Z'
+excerpt: 'Using containers, kubernetes and helm to deploy and manage multiple wireguard VPNs'
+coverImage: '/assets/blog/wireguard-chart/cover.jpg'
+date: '2022-12-13T00:00:00.000Z'
 author:
   name: bryopsida
   picture: '/assets/blog/authors/si.jpeg'
 ogImage:
-  url: '/assets/blog/dynamic-routing/cover.jpg'
+  url: '/assets/blog/wireguard-chart/cover.jpg'
 ---
+## Wireguard Helm Chart
+A simple chart that can be used to run wireguard inside of a Kubernetes cluster.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. At imperdiet dui accumsan sit amet nulla facilities morbi tempus. Praesent elementum facilisis leo vel fringilla. Congue mauris rhoncus aenean vel. Egestas sed tempus urna et pharetra pharetra massa massa ultricies.
+## Add the helm repo
+To add this helm repo, run `helm repo add wireguard https://bryopsida.github.io/wireguard-chart` followed by a `helm repo update` to fetch the contents.
 
-Venenatis cras sed felis eget velit. Consectetur libero id faucibus nisl tincidunt. Gravida in fermentum et sollicitudin ac orci phasellus egestas tellus. Volutpat consequat mauris nunc congue nisi vitae. Id aliquet risus feugiat in ante metus dictum at tempor. Sed blandit libero volutpat sed cras. Sed odio morbi quis commodo odio aenean sed adipiscing. Velit euismod in pellentesque massa placerat. Mi bibendum neque egestas congue quisque egestas diam in arcu. Nisi lacus sed viverra tellus in. Nibh cras pulvinar mattis nunc sed. Luctus accumsan tortor posuere ac ut consequat semper viverra. Fringilla ut morbi tincidunt augue interdum velit euismod.
+## Deploy
+To deploy with defaults and use the automatically generated private key you can use `helm upgrade --install wg-vpn-1 wireguard/wireguard --namespace <your namespace>`.
+This will create a load balancer service exposing UDP port `51820`, to run multiple wireguard releases you will need to change the service port to avoid collisions, 
+you can find the helm values documentation [here](helm/wireguard/README.md). By default no client configurations are added. The default CIDR for the VPN network is `10.34.0.1/24`
 
-## Lorem Ipsum
+## Maintain client configurations
+Follow the wireguard [documentation](https://www.wireguard.com/quickstart/) for generating keys and determining client IPs. Clients can be set by providing the following yaml override values.
 
-Tristique senectus et netus et malesuada fames ac turpis. Ridiculous mus mauris vitae ultricies leo integer malesuada nunc vel. In mollis nunc sed id semper. Egestas tellus rutrum tellus pellentesque. Phasellus vestibulum lorem sed risus ultricies tristique nulla. Quis blandit turpis cursus in hac habitasse platea dictumst quisque. Eros donec ac odio tempor orci dapibus ultrices. Aliquam sem et tortor consequat id porta nibh. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla. Diam vulputate ut pharetra sit amet. Ut tellus elementum sagittis vitae et leo. Arcu non odio euismod lacinia at quis risus sed vulputate.
+``` yaml
+wireguard:
+  clients:
+    - PublicKey: <your client public key here>
+      AllowedIPs: 10.34.0.2/32
+```
+
+And feeding it into helm `helm upgrade --install wg-vpn-1 wireguard/wireguard --namespace <your namespace> -f <path-to-your-overides>`
+
+Source Code
+---
+[GitHub](https://github.com/bryopsida/wireguard-chart)

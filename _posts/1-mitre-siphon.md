@@ -1,19 +1,50 @@
 ---
-title: 'Mitre Siphon - Building a full text search engine for mitre CVEs'
-excerpt: 'TODO'
-coverImage: '/assets/blog/dynamic-routing/cover.jpg'
-date: '2020-03-16T05:35:07.322Z'
+title: 'Mitre Siphon - a full text search engine for mitre CVEs'
+excerpt: 'Using Quartz, PostgreSQL, Kafka, Kubernetes, and Helm to create a REST API full text search engine for the MITRE CVE database thats continously updated'
+coverImage: '/assets/blog/mitre-siphon/cover.jpg'
+date: '2022-12-13T00:00:00.000Z'
 author:
   name: bryopsida
   picture: '/assets/blog/authors/si.jpeg'
 ogImage:
-  url: '/assets/blog/dynamic-routing/cover.jpg'
+  url: '/assets/blog/mitre-siphon/cover.jpg'
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. At imperdiet dui accumsan sit amet nulla facilities morbi tempus. Praesent elementum facilisis leo vel fringilla. Congue mauris rhoncus aenean vel. Egestas sed tempus urna et pharetra pharetra massa massa ultricies.
+## Mitre-Siphon
 
-Venenatis cras sed felis eget velit. Consectetur libero id faucibus nisl tincidunt. Gravida in fermentum et sollicitudin ac orci phasellus egestas tellus. Volutpat consequat mauris nunc congue nisi vitae. Id aliquet risus feugiat in ante metus dictum at tempor. Sed blandit libero volutpat sed cras. Sed odio morbi quis commodo odio aenean sed adipiscing. Velit euismod in pellentesque massa placerat. Mi bibendum neque egestas congue quisque egestas diam in arcu. Nisi lacus sed viverra tellus in. Nibh cras pulvinar mattis nunc sed. Luctus accumsan tortor posuere ac ut consequat semper viverra. Fringilla ut morbi tincidunt augue interdum velit euismod.
+Watches the NVD CVE JSON repositories and on updates publishes to a queue. Queue data is processsed and saved into a database for full text searching across a REST Api.
 
-## Lorem Ipsum
+### Prerequisites
 
-Tristique senectus et netus et malesuada fames ac turpis. Ridiculous mus mauris vitae ultricies leo integer malesuada nunc vel. In mollis nunc sed id semper. Egestas tellus rutrum tellus pellentesque. Phasellus vestibulum lorem sed risus ultricies tristique nulla. Quis blandit turpis cursus in hac habitasse platea dictumst quisque. Eros donec ac odio tempor orci dapibus ultrices. Aliquam sem et tortor consequat id porta nibh. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla. Diam vulputate ut pharetra sit amet. Ut tellus elementum sagittis vitae et leo. Arcu non odio euismod lacinia at quis risus sed vulputate.
+- [docker](https://docs.docker.com/desktop/)
+- [docker-compose](https://docs.docker.com/compose/)
+
+## Running the tests
+
+Tests are run using docker-compose.
+
+```
+docker-compose --file docker-compose.test.yml build
+docker-compose --file docker-compose.test.yml run sut
+```
+
+## Getting Started
+
+Run `docker-compose up` to launch the application. Once everything has started up you will be able to access the application at http://localost:8080/ the default credentials are test:test. Once you are logged in you will have access to the swagger ui to interact with the REST API. This will allow you to do paged multi term searches against the saved NVD CVE data.
+
+![image](https://user-images.githubusercontent.com/8363252/106229649-9adac180-61b3-11eb-8aa9-614ebfb1dcf3.png)
+
+## Built With
+
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Gradle](https://gradle.org/)
+- [Quartz](https://www.quartz-scheduler.org/)
+- [Kafka](http://kafka.apache.org/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [FlyWay](https://flywaydb.org/documentation/)
+- [Hibernate](https://hibernate.org/)
+- [OpenAPI3](https://swagger.io/blog/news/announcing-openapi-3-0/)
+
+Source Code
+---
+[Github](https://github.com/curium-rocks/mitre-siphon)
