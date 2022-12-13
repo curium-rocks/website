@@ -8,7 +8,6 @@ on:
   pull_request:
 jobs:
   build-container:
-    needs: test
     name: "Build container image"
     uses: curium-rocks/flows/.github/workflows/oci-build-image.yml@main
     with:
