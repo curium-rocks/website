@@ -13,4 +13,4 @@ jobs:
     uses: curium-rocks/flows/.github/workflows/oci-build-image.yml@main
     with:
       image_name: website
-      push_in_pr: false
+      push_in_pr: true
